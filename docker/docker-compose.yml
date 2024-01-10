@@ -1,0 +1,24 @@
+version: '3.4'
+services:
+  dockerfile:
+    build:
+      context: .
+      args:
+        USERNAME: ${USER}
+    image: quips_geant4
+    stdin_open: true
+    tty: true
+    container_name: ccdgeant4
+    network_mode: "host"
+    ipc: host
+    privileged: true
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - $HOME/.Xauthority:/home/${USER}/.Xauthority
+      - ../Geant4_CCD_simulation:/tools/Geant4_CCD_simulation:rw
+    devices:
+      - /dev/dri:/dev/dri
+    environment:
+      - "DISPLAY=$DISPLAY"
+    command: >
+      bash -c "chown -R ${USER}:${USER} /tools/Geant4_CCD_simulation && exec bash"

@@ -1,0 +1,5 @@
+Particle,Energy,Particles,SetAngle,Phi,Theta
+mu+,4000000,10,1,-25,64
+mu+,4000000,10,1,-55,44
+mu+,4000000,10,1,17,48
+mu+,4000000,10,1,-4,75

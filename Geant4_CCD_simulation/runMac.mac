@@ -1,0 +1,109 @@
+## ----------------------- ##
+##      GENERIC Macro      ##
+## ----------------------- ##
+
+## ------------------------ ##
+##       RUN CONTROL        ##
+## ------------------------ ##
+/run/verbose       0
+/control/verbose   0
+/tracking/verbose  0
+
+## Turns on Atomic Deexcitation
+/process/em/fluo true
+/process/em/auger true
+/process/em/augerCascade true
+/process/em/pixe true
+/process/em/deexcitationIgnoreCut true 
+
+## ------------------------ ##
+##      VISUALIZATION       ##
+## ------------------------ ##
+
+## Will produce an file per event 
+## viewable with paraview
+#/vis/open VRML2FILE
+
+## Which logical volumes to draw
+#/vis/drawVolume nanosphere
+#/vis/scene/add/volume Si1
+#/vis/scene/add/volume Si2
+#/vis/scene/add/volume Si3
+#/vis/scene/add/volume Si4
+#/vis/scene/add/volume Si5
+
+## To add trajectories
+#/vis/scene/add/trajectories
+#/vis/scene/endOfEventAction accumulate
+
+#/vis/viewer/flush
+
+## ------------------------ ##
+##     SET DET PARAMS       ##
+## ------------------------ ##
+
+## Control whether or not Si02 nanosphere is built
+/mydet/BuildNanosphere true
+
+## Control whether or not Si CCD panels are built
+/mydet/BuildSiPanels false
+
+## Max step size before recording
+/mydet/MaxStepLimit 1.0 cm #10. nm 
+
+## Set some detector parameters
+/mydet/SiO2sphereRadius 1000. nm #100. nm
+/mydet/SiXYsize 1.2 cm
+/mydet/SiThickness 250 um
+/mydet/SourceOffset -0.2 cm
+
+## ------------------------ ##
+##   INITIALIZE DETECTOR    ##
+## ALLOWS FOR MACRO EDITING ##
+##      OF DET PARAMS       ##
+## ------------------------ ##   
+
+## Must be set before defining generator
+/run/initialize
+
+## ------------------------ ##
+##    SET THE GENERATOR     ##
+## ------------------------ ##
+
+## Uncomment the generator comment you wish to use
+
+## example single mono-energetic particle
+#/myapp/generator Particle e- 100.0 keV
+
+## example ion generator (Cr51)
+/myapp/generator Ion 24 51
+
+## If you want to only simulate single decay 
+## and now whole chain set this command
+## /grdm/nucleusLimits A_min A_max Z_min Z_max
+#/myapp/generator Ion 84 212
+#/grdm/nucleusLimits 212 212 84 84
+
+## example energy spectra generator
+#/myapp/generator Spectrum gamma ../UniformEnergySpectra.txt
+
+## exmaple using tritium Spectrum
+#/myapp/generator Tritium
+
+## ------------------------ ##
+##     SET THE POSITION     ##
+## ------------------------ ##
+
+## default position is origin 
+
+## to start from a single point
+#/myapp/setParticlePosition Point 0. 0. 0. cm
+
+## to uniformly sample a sphere
+/myapp/setParticlePosition RandomSphere 999. nm
+
+## ------------------------ ##
+##   N EVENTS TO SIMULATE   ##
+## ------------------------ ##    
+
+/run/beamOn 100000
